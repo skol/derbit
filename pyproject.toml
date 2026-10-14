@@ -3,4 +3,8 @@ name = "derbit"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "alembic>=1.20.0",
+    "psycopg[binary]>=3.3.6",
+    "python-dotenv>=1.2.4",
+]
