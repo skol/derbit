@@ -25,7 +25,7 @@ if not os.getenv("DATABASE_URL"):
 db_url = os.getenv("DATABASE_URL").replace("+asyncpg", "")
 config.set_main_option("sqlalchemy.url", db_url)
 
-from app.database import metadata
+from app.common.database import metadata
 target_metadata = metadata
 
 # other values from the config, defined by the needs of env.py,
