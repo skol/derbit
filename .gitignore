@@ -218,7 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-/data/postgres/
-/data/redis/
-/.env.hard
-/.env.light
+
+data/postgres/
+data/redis/
+.env.hard
+.env.light
+.env.clean
