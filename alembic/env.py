@@ -20,8 +20,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-if not os.getenv("DATABASE_URL"):
-    load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env.hard")
+# if not os.getenv("DATABASE_URL"):
+#     load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env.hard")
 db_url = os.getenv("DATABASE_URL").replace("+asyncpg", "")
 config.set_main_option("sqlalchemy.url", db_url)
 

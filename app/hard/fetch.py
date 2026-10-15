@@ -14,14 +14,11 @@ from app.hard.settings import get_settings
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 cfg = get_settings()
-REDIS_URL = cfg.REDIS_URL
-DATABASE_URL = cfg.DATABASE_URL
-TICKERS = cfg.TICKERS
 
 celery_app = Celery(
     "hard",
-    broker=REDIS_URL,
-    backend=REDIS_URL,
+    broker=cfg.REDIS_URL,
+    backend=cfg.REDIS_URL,
     task_serializer="json",
     accept_content=["json"],
     result_serializer="json",
@@ -42,17 +39,17 @@ async def _fetch_and_save_prices():
     Логика подобная лайтовой версии, но с учетом специфики celery
     """
     # Создаем движок для этой задачи (для тестового задания, в продакшене лучше переиспользовать глобальный engine)
-    engine = create_async_engine(DATABASE_URL)
+    engine = create_async_engine(cfg.DATABASE_URL)
 
     try:
         async with aiohttp.ClientSession() as session:
             current_timestamp = int(time.time())
             data_to_insert = []
 
-            tasks = [fetch_index_price(session, ticker) for ticker in TICKERS]
+            tasks = [fetch_index_price(session, ticker) for ticker in cfg.TICKERS]
             prices_ = await asyncio.gather(*tasks)
 
-            for ticker, price in zip(TICKERS, prices_):
+            for ticker, price in zip(cfg.TICKERS, prices_):
                 if price is not None:
                     data_to_insert.append({
                         "ticker": ticker,
