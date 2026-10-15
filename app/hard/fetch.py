@@ -11,7 +11,7 @@ from app.common.database import prices
 from app.common.fetch import fetch_index_price
 from app.hard.settings import get_settings
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 cfg = get_settings()
 
@@ -49,13 +49,11 @@ async def _fetch_and_save_prices():
             tasks = [fetch_index_price(session, ticker) for ticker in cfg.TICKERS]
             prices_ = await asyncio.gather(*tasks)
 
-            for ticker, price in zip(cfg.TICKERS, prices_):
+            for ticker, price in zip(cfg.TICKERS, prices_, strict=True):
                 if price is not None:
-                    data_to_insert.append({
-                        "ticker": ticker,
-                        "price": price,
-                        "timestamp": current_timestamp
-                    })
+                    data_to_insert.append(
+                        {"ticker": ticker, "price": price, "timestamp": current_timestamp}
+                    )
 
             if data_to_insert:
                 async with engine.connect() as connection:
@@ -68,6 +66,7 @@ async def _fetch_and_save_prices():
 
     finally:
         await engine.dispose()
+
 
 @celery_app.task(name="app.hard.fetch.fetch_prices_task")
 def fetch_prices_task():

@@ -11,9 +11,21 @@ dependencies = [
     "celery-types==0.26.0",
     "fastapi>=0.143.1",
     "greenlet>=3.5.6",
+    "pre-commit>=4.7.0",
     "psycopg[binary]>=3.3.6",
     "pydantic-settings>=2.16.0",
     "python-dotenv>=1.2.4",
     "redis>=8.1.0",
+    "ruff>=0.17.1",
     "uvicorn>=0.54.0",
 ]
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+ignore = ["E501", "B008"]
+
+[tool.ruff.format]
+quote-style = "double"

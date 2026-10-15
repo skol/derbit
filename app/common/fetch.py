@@ -2,11 +2,11 @@ import logging
 
 import aiohttp
 
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 DERIBIT_API_URL = "https://www.deribit.com/api/v2/public/get_index_price"
 TICKERS = ["btc_usd", "eth_usd"]
+
 
 async def fetch_index_price(session: aiohttp.ClientSession, ticker: str) -> float | None:
     """Асинхронный запрос цены индекса с биржи Deribit."""
