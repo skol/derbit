@@ -28,6 +28,8 @@ async def fetch_index_price(session: aiohttp.ClientSession, ticker: str) -> floa
                 logging.error(f"Ошибка API Deribit для {ticker}: Статус {response.status}")
     except aiohttp.ClientError as e:
         logging.error(f"Сетевая ошибка для {ticker}: {e}")
+    except TimeoutError as e:
+        logging.error(f"Таймаут для {ticker}: {e}")
     except (KeyError, ValueError, TypeError) as e:
         logging.error(f"Неожиданный формат ответа для {ticker}: {e}")
 

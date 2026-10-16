@@ -81,7 +81,7 @@ async def get_prices_by_date(
     db: AsyncConnection = Depends(get_db),
 ):
     if start_date > end_date:
-        raise HTTPException(status_code=400, detail="start_date не может быть больше end_date")
+        raise HTTPException(status_code=422, detail="start_date не может быть больше end_date")
 
     # Переводим входящую datetime в UNIX timestamp, как требует формат хранения в БД по ТЗ
     start_ts = int(start_date.replace(tzinfo=UTC).timestamp())
@@ -89,7 +89,9 @@ async def get_prices_by_date(
 
     stmt = (
         select(prices)
-        .where(and_(prices.c.ticker == ticker.lower(), prices.timestamp.between(start_ts, end_ts)))
+        .where(
+            and_(prices.c.ticker == ticker.lower(), prices.c.timestamp.between(start_ts, end_ts))
+        )
         .order_by(prices.c.timestamp.desc())
         .limit(limit)
         .offset(offset)
